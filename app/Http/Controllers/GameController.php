@@ -30,13 +30,12 @@ class GameController extends Controller
         $client = new Client();
         try {
             // Make a request to the external endpoint
-            $response = $client->request('POST', 'https://api.gamesprime-app.test/web-api/auth/session/v2/verifyOperatorPlayerSession', [
+            $response = $client->request('POST', 'https://m.gamesprime.fun/web-api/auth/session/v2/verifyOperatorPlayerSession', [
                 'verify' => false, // Apenas para desenvolvimento! Remove ou define como true em produção.
                 'headers' => [
                     'Accept' => 'application/json',
                 ],
             ]);
-
 
             // Get the body of the response
             $body = $response->getBody();
