@@ -24,6 +24,9 @@ use App\Http\Controllers\GameController;
 //     ->where('path', '.*');
 
     // https://api.gamesprime-app.test/web-api/auth/session/v2/verifyOperatorPlayerSession?traceId=ZFHIVP08
+//https://api.gamesprime.fun/web-api/game-proxy/v2/GameName/Get?traceId=NQCQQY18
+//https://api.pg-nmga.com/game-api/fortune-tiger/v2/GameInfo/Get?traceId=ROHVDC18
+
 
 Route::post(
     '/web-api/auth/session/v2/verifySession',
@@ -34,4 +37,14 @@ Route::post(
 Route::post(
     '/web-api/auth/session/v2/verifyOperatorPlayerSession',
     [GameController::class, 'verifyOperatorPlayerSession']
+);
+
+Route::post(
+    '/web-api/game-proxy/v2/GameName/Get',
+    [GameController::class, 'getGameName']
+);
+
+Route::post(
+    '/game-api/fortune-tiger/v2/GameInfo/Get',
+    [GameController::class, 'getGameInfo']
 );
