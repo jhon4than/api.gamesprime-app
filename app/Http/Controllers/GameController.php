@@ -1806,7 +1806,7 @@ class GameController extends Controller
                     "wbn": null,
                     "wfg": null,
                     "blb": 2.00,
-                    "blab": 1.60,
+                    "blab": 23.60,
                     "bl": 23.60,
                     "tb": 0.40,
                     "tbb": 0.40,
@@ -1855,7 +1855,7 @@ class GameController extends Controller
                     10
                 ],
                 "mxl": 5,
-                "bl": 10.00,
+                "bl": 280.00,
                 "inwe": false,
                 "iuwe": false,
                 "ls": {
