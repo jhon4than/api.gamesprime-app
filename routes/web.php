@@ -48,3 +48,14 @@ Route::post(
     '/game-api/fortune-tiger/v2/GameInfo/Get',
     [GameController::class, 'getGameInfo']
 );
+
+Route::post(
+    '/game-api/fortune-tiger/v2/Spin',
+    [GameController::class, 'spin']
+);
+
+//https://api.pg-nmga.com/web-api/game-proxy/v2/Resources/GetByResourcesTypeIds?traceId=PZBMMQ18
+Route::post(
+    '/web-api/game-proxy/v2/Resources/GetByResourcesTypeIds',
+    [GameController::class, 'spin']
+);
