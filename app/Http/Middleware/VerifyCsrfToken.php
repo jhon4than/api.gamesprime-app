@@ -24,7 +24,7 @@ class VerifyCsrfToken extends Middleware
         }
         //adicionar logica para verificar as rotas dinamicas
         $path = $request->path();
-        if(preg_match('#^game-api/.+/v2/(gameinfo/get|spin)$#i' . $path,)){
+        if(preg_match('#^game-api/.+/v2/(gameinfo/get|spin)$#i' , $path)){
             return true;
         }
     }
