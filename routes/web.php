@@ -36,7 +36,7 @@ Route::post(
 
 Route::post(
     '/web-api/auth/session/v2/verifyOperatorPlayerSession',
-    [GameController::class, 'verifyOperatorPlayerSession']
+    [GameController::class, 'verifySession']
 );
 
 Route::post(
@@ -53,7 +53,7 @@ Route::post(
     '/game-api/fortune-tiger/v2/Spin',
     [GameController::class, 'spin']
 );
-
+ 
 //https://api.pg-nmga.com/web-api/game-proxy/v2/Resources/GetByResourcesTypeIds?traceId=PZBMMQ18
 Route::post(
     '/web-api/game-proxy/v2/Resources/GetByResourcesTypeIds',
