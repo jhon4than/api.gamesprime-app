@@ -39,11 +39,10 @@ class GameController extends Controller
 
 
 
-    public function verifySession()
+    public function verifySession(Request $request)
     {
-        $this->getGameAll(126);
+        $this->getGameAll($request["gi"]);
 
-        dd($this->getGameAll(126));
         // Decode the JSON returned by the rJSON method
         $data = json_decode($this->rJSON(), true);
 
