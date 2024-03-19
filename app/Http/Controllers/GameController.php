@@ -70,6 +70,8 @@ class GameController extends Controller
         $game = $this->getGameAll($game);
         
         $filePath = storage_path('app/game/' . $game->gameCode . '/getGameInfo.json');
+        
+        dd($filePath);
 
         if (!file_exists($filePath)) {
             return response()->json(array('error' => 'Arquivo games não encontrado', 404));
