@@ -8,6 +8,15 @@ use Illuminate\Http\Request;
 class GameController extends Controller
 {
 
+    protected $cs;
+    protected $ml;
+    protected $bet;
+    protected $table;
+    protected $symbols;
+    protected $multiplier;
+    protected $lines;
+    protected $sequence = [];
+
     public function getGameAll($game_id_code)
     {
         $filePath = storage_path('app/games-configs/allgames.json');
@@ -38,7 +47,7 @@ class GameController extends Controller
     public function verifySession(Request $request)
     {
         $update = $this->getGameAll($request["gi"]);
-        
+
         // Decode the JSON returned by the rJSON method
         $data = json_decode($this->rJSON(), true);
 
@@ -82,14 +91,135 @@ class GameController extends Controller
 
         return response()->json($getGameInfo);
     }
-    public function spin()
+    public function spin(Request $request)
     {
+        $this->cs = $request->cs;
+        $this->ml = $request->ml;
+        $this->bet = $this->cs * $this->ml;
+
+
+        $table = 9;
+        $symbols = [0, 2, 3, 4, 5, 6, 7];
+        $multiplier = [
+            0 => [3 => 250],
+            2 => [3 => 100],
+            3 => [3 => 25],
+            4 => [3 => 10],
+            5 => [3 => 8],
+            6 => [3 => 5],
+            7 => [3 => 3],
+        ];
+
+        $lines = [
+            1 => [1, 4, 7],
+            2 => [0, 3, 6],
+            3 => [2, 5, 8],
+            4 => [0, 4, 8],
+            5 => [2, 4, 6],
+        ];
+
+        $this->generateResult();
+        $calculatePrize = $this->calculatePrize();
         // Decode the JSON returned by the rJSON method
         $data = json_decode($this->spinJson(), true);
+        $data["dt"]["si"]["orl"] = $this->sequence;
+        $data["dt"]["si"]["rl"] = $this->sequence;
+
+
+        $data["dt"]["si"]["cs"] = $this->cs;
+        $data["dt"]["si"]["ml"] = $this->ml;
+
+        $data["dt"]["si"]["tb"] = $this->bet * count($this->lines);
+        $data["dt"]["si"]["tbb"] = $this->bet * count($this->lines);
+        $data["dt"]["si"]["np"] = $this->bet * count($this->lines) + $calculatePrize["aw"] ?? 0;
+
+        $data["dt"]["si"]["wp"] = $calculatePrize["wp"] ?? null;
+        $data["dt"]["si"]["lw"] = $calculatePrize["lw"] ?? null;
+        $data["dt"]["si"]["aw"] = $calculatePrize["aw"] ?? null;
 
         // Return the data as a JSON response
         return response()->json($data);
     }
+
+    public function calculatePrize()
+    {
+        $aw = 0;
+        $lw = null;
+        $wp = null;
+
+        if ($data = $this->checkWining()) {
+            $lw = $data['lw'] ?? null;
+            $wp = $data['wp'] ?? null;
+            if ($lw) {
+                foreach ($lw as $datalw) {
+                    $aw += $datalw;
+                }
+            }
+        }
+        return [
+            'aw' => $aw,
+            'lw' => $lw,
+            'wp' => $wp,
+        ];
+    }
+
+    public function checkWining()
+    {
+        $winingLines = [];
+        foreach ($this->lines as $index => $indices) {
+            $wildCardCount = 0;
+            $numbers = [];
+
+            foreach ($indices as $i) {
+                if (isset ($this->sequence[$i])) {
+                    $numbers[] = $this->sequence[$i];
+                    if ($this->sequence[$i] == 0) {
+                        $wildCardCount++;
+                    }
+                }
+            }
+
+            $numbersCount = [];
+            foreach ($numbers as $number) {
+                if ($number != 0) {
+                    $numbersCount[$number] = ($numbersCount[$number] ?? 0) + 1;
+                }
+            }
+
+            $winingCounts = array_map(function ($count) use ($wildCardCount) {
+                return $count + $wildCardCount;
+            }, $numbersCount);
+            if (!empty ($winingCounts)) {
+                $maxWiningCount = max($winingCounts);
+                if ($maxWiningCount >= 3) {
+                    $winingNumber = array_search($maxWiningCount, $winingCounts);
+                    if (isset ($this->multiplier[$winingNumber][$maxWiningCount])) {
+                        $winingLines["wp"][$index] = $this->lines[$index];
+                        $winingLines["lw"][$index] = $this->multiplier[$winingNumber][$maxWiningCount] * $this->bet;
+                    }
+                }
+            } else {
+                if ($wildCardCount == count($indices)) {
+                    if (isset ($this->multiplier[0][3])) {
+                        $winingLines["wp"][$index] = $this->lines[$index];
+                        $winingLines["lw"][$index] = $this->multiplier[0][3] * $this->bet;
+                    }
+                }
+            }
+        }
+        return $winingLines;
+    }
+
+    public function generateResult()
+    {
+        $count = count($this->symbols);
+
+        for ($i = 0; $i < $this->table; $i++) {
+            $randomIndex = mt_rand(0, $count - 1);
+            $this->sequence[] = $this->symbols[$randomIndex];
+        }
+    }
+
     public function GetByResourcesTypeIds()
     {
         // Decode the JSON returned by the rJSON method
