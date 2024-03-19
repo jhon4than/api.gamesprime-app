@@ -41,12 +41,16 @@ class GameController extends Controller
 
     public function verifySession(Request $request)
     {
-        $this->getGameAll($request["gi"]);
+        $update = $this->getGameAll($request["gi"]);
 
         // Decode the JSON returned by the rJSON method
         $data = json_decode($this->rJSON(), true);
 
-        // Return the data as a JSON response
+        $data["dt"]["geu"] = str_replace('name-game', $update->gameCode, $data["dt"]["geu"]);
+        $data["dt"]["tk"] = $request->otk;
+        // $data["dt"]["nkn"] = $request->       aqui login de usuario;
+        $data["dt"]["gm"][0]["gid"] = $update->gameId;
+
         return response()->json($data);
     }
 
@@ -2104,7 +2108,7 @@ class GameController extends Controller
                 "pcd": "admin@demo.com",
                 "tk": "CC05AFC4-9059-49D3-B4DE-3DF2CDAADC47",
                 "st": 1,
-                "geu": "game-api/fortune-tiger/",
+                "geu": "game-api/name-game/",
                 "lau": "/game-api/lobby/",
                 "bau": "web-api/game-proxy/",
                 "cc": "BRL",
