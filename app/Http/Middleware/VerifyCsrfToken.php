@@ -15,8 +15,17 @@ class VerifyCsrfToken extends Middleware
         '/web-api/auth/session/v2/verifySession',
         '/web-api/auth/session/v2/verifyOperatorPlayerSession',
         '/web-api/game-proxy/v2/GameName/Get',
-        '/game-api/fortune-tiger/v2/GameInfo/Get',
-        '/game-api/fortune-tiger/v2/Spin',
-        '/web-api/game-proxy/v2/Resources/GetByResourcesTypeIds'
+        '/web-api/game-proxy/v2/Resources/GetByResourcesTypeIds',
     ];
+
+    protected function inExceptArray($request){
+        if (parent::inExceptArray($request)){
+            return true;
+        }
+        //adicionar logica para verificar as rotas dinamicas
+        $path = $request->path();
+        if(preg_match('#^game-api/.+/v2/(gameinfo/get|spin)$#i' . $path,)){
+            return true;
+        }
+    }
 }
