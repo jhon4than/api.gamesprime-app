@@ -10,7 +10,7 @@ class GameController extends Controller
 
     public function getGameAll($game_id_code)
     {
-        $filePath = storage_path('app/game-configs/allgames.json');
+        $filePath = storage_path('app/games-configs/allgames.json');
 
         if (!file_exists($filePath)) {
             return response()->json(["error" => "Arquivo allgames não encontrado"], 404);
@@ -38,7 +38,7 @@ class GameController extends Controller
     public function verifySession(Request $request)
     {
         $update = $this->getGameAll($request["gi"]);
-        dd($update);
+        
         // Decode the JSON returned by the rJSON method
         $data = json_decode($this->rJSON(), true);
 
