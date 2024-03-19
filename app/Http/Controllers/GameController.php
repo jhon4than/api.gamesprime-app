@@ -33,12 +33,6 @@ class GameController extends Controller
         return response()->json(array('error' => 'Jogo não foi encontrado', 404));
     }
 
-
-
-
-
-
-
     public function verifySession(Request $request)
     {
         $update = $this->getGameAll($request["gi"]);
@@ -71,13 +65,20 @@ class GameController extends Controller
         // Return the data as a JSON response
         return response()->json($data);
     }
-    public function getGameInfo()
+    public function getGameInfo($game, Request $request)
     {
-        // Decode the JSON returned by the rJSON method
-        $data = json_decode($this->getGameInfoJson(), true);
+        $game = $this->getGameAll($game);
+        
+        $filePath = storage_path('app/game/' . $game->gameCode . '/getGameInfo.json');
 
-        // Return the data as a JSON response
-        return response()->json($data);
+        if (!file_exists($filePath)) {
+            return response()->json(array('error' => 'Arquivo games não encontrado', 404));
+        }
+
+        $jsonContent = file_get_contents($filePath);
+        $getGameInfo = json_decode($jsonContent);
+
+        return response()->json($getGameInfo);
     }
     public function spin()
     {
@@ -1864,110 +1865,7 @@ class GameController extends Controller
 
     public function getGameInfoJson()
     {
-        return '{
-            "dt": {
-                "fb": null,
-                "wt": {
-                    "mw": 5.0,
-                    "bw": 20.0,
-                    "mgw": 35.0,
-                    "smgw": 50.0
-                },
-                "maxwm": null,
-                "cs": [
-                    0.08,
-                    0.8,
-                    3.0,
-                    10.0
-                ],
-                "ml": [
-                    1,
-                    2,
-                    3,
-                    4,
-                    5,
-                    6,
-                    7,
-                    8,
-                    9,
-                    10
-                ],
-                "mxl": 5,
-                "bl": 23.60,
-                "inwe": false,
-                "iuwe": false,
-                "ls": {
-                    "si": {
-                        "wc": 50,
-                        "ist": true,
-                        "itw": true,
-                        "fws": 0,
-                        "wp": null,
-                        "orl": [
-                            7,
-                            5,
-                            4,
-                            7,
-                            6,
-                            5,
-                            2,
-                            4,
-                            7
-                        ],
-                        "lw": null,
-                        "irs": false,
-                        "gwt": -1,
-                        "fb": null,
-                        "ctw": 0.0,
-                        "pmt": null,
-                        "cwc": 0,
-                        "fstc": null,
-                        "pcwc": 0,
-                        "rwsp": null,
-                        "hashr": null,
-                        "ml": 1,
-                        "cs": 0.08,
-                        "rl": [
-                            7,
-                            5,
-                            4,
-                            7,
-                            6,
-                            5,
-                            2,
-                            4,
-                            7
-                        ],
-                        "sid": "300001446408686",
-                        "psid": "300001446408686",
-                        "st": 1,
-                        "nst": 1,
-                        "pf": 1,
-                        "aw": 0.00,
-                        "wid": 0,
-                        "wt": "C",
-                        "wk": "0_C",
-                        "wbn": null,
-                        "wfg": null,
-                        "blb": 11.32,
-                        "blab": 10.92,
-                        "bl": 10.00,
-                        "tb": 0.40,
-                        "tbb": 0.40,
-                        "tw": 0.00,
-                        "np": -0.40,
-                        "ocr": null,
-                        "mr": null,
-                        "ge": [
-                            1,
-                            11
-                        ]
-                    }
-                },
-                "cc": "BRL"
-            },
-            "err": null
-        }';
+        return '';
     }
 
     public function getGameJson()

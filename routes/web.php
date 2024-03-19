@@ -45,12 +45,12 @@ Route::post(
 );
 
 Route::post(
-    '/game-api/fortune-tiger/v2/GameInfo/Get',
+    '/game-api/{game}/v2/GameInfo/Get',
     [GameController::class, 'getGameInfo']
 );
 
 Route::post(
-    '/game-api/fortune-tiger/v2/Spin',
+    '/game-api/{game}/v2/Spin',
     [GameController::class, 'spin']
 );
  
