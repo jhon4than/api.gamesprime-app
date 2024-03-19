@@ -1864,6 +1864,27 @@ class GameController extends Controller
             "err": null
         }';
     }
+    public function getGameRule()
+    {
+        return '{
+            "dt": {
+                "rtp": {
+                    "Default": {
+                        "min": 96.81,
+                        "max": 96.81
+                    }
+                },
+                "ows": {
+                    "itare": false,
+                    "tart": 0,
+                    "igare": false,
+                    "gart": 0
+                },
+                "jws": null
+            },
+            "err": null
+        }';
+    }
 
     public function getGameInfoJson()
     {

@@ -59,3 +59,8 @@ Route::post(
     '/web-api/game-proxy/v2/Resources/GetByResourcesTypeIds',
     [GameController::class, 'spin']
 );
+
+Route::post(
+    '/web-api/game-proxy/v2/GameRule/Get',
+    [GameController::class, 'getGameRule']
+);

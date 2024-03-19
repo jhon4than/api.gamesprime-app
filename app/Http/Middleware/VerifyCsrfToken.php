@@ -16,15 +16,17 @@ class VerifyCsrfToken extends Middleware
         '/web-api/auth/session/v2/verifyOperatorPlayerSession',
         '/web-api/game-proxy/v2/GameName/Get',
         '/web-api/game-proxy/v2/Resources/GetByResourcesTypeIds',
+        '/web-api/game-proxy/v2/GameRule/Get',
     ];
 
-    protected function inExceptArray($request){
-        if (parent::inExceptArray($request)){
+    protected function inExceptArray($request)
+    {
+        if (parent::inExceptArray($request)) {
             return true;
         }
         //adicionar logica para verificar as rotas dinamicas
         $path = $request->path();
-        if(preg_match('#^game-api/.+/v2/(gameinfo/get|spin)$#i' , $path)){
+        if (preg_match('#^game-api/.+/v2/(gameinfo/get|spin)$#i', $path)) {
             return true;
         }
     }
