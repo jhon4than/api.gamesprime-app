@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class GameController extends Controller
 {
 
-    public function getGameAll()
+    public function getGameAll($game_id_code)
     {
         $filePath = storage_path('app/games-configs/allgames.json');
 
@@ -41,7 +41,9 @@ class GameController extends Controller
 
     public function verifySession()
     {
-        $this->getGameAll();
+        $this->getGameAll(126);
+
+        dd($this->getGameAll(126));
         // Decode the JSON returned by the rJSON method
         $data = json_decode($this->rJSON(), true);
 
