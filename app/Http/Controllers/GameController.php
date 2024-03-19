@@ -10,28 +10,30 @@ class GameController extends Controller
 
     public function getGameAll($game_id_code)
     {
-        $filePath = storage_path('app/games-configs/allgames.json');
+        $filePath = storage_path('app/game-configs/allgames.json');
 
         if (!file_exists($filePath)) {
-            return response()->json(array('error' => 'Arquivo All games não encontrado', 404));
+            return response()->json(["error" => "Arquivo allgames não encontrado"], 404);
         }
 
         $jsonContent = file_get_contents($filePath);
         $gameConfig = json_decode($jsonContent);
 
         foreach ($gameConfig->data as $game) {
-            if (filter_var($game_id_code, FILTER_VALIDATE_INT) !== false) {
+            if (filter_var($game->id_code, FILTER_VALIDATE_INT) !== false) {
                 if ($game->gameId == $game_id_code) {
                     return $game;
-                } else {
-                    if ($game->gameCode == $game_id_code) {
-                        return $game;
-                    }
+                }
+            } else {
+                if ($game->gameCode == $game_id_code) {
+                    return $game;
                 }
             }
         }
-        return response()->json(array('error' => 'Jogo não foi encontrado', 404));
+
+        return response()->json(["error" => "Jogo não foi encontrado"], 404);
     }
+
 
     public function verifySession(Request $request)
     {
@@ -67,11 +69,9 @@ class GameController extends Controller
     }
     public function getGameInfo($game, Request $request)
     {
-        $games = $this->getGameAll(126);
-        
-        dd($games);
-        $filePath = storage_path('app/game/' . $games->gameCode . '/getGameInfo.json');
-        
+        $game = $this->getGameAll($game);
+
+        $filePath = storage_path('app/game/' . $game->gameCode . '/getGameInfo.json');
 
         if (!file_exists($filePath)) {
             return response()->json(array('error' => 'Arquivo games não encontrado', 404));
