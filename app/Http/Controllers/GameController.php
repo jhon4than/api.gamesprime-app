@@ -20,7 +20,7 @@ class GameController extends Controller
         $gameConfig = json_decode($jsonContent);
 
         foreach ($gameConfig->data as $game) {
-            if (filter_var($game->id_code, FILTER_VALIDATE_INT) !== false) {
+            if (filter_var($game_id_code, FILTER_VALIDATE_INT) !== false) {
                 if ($game->gameId == $game_id_code) {
                     return $game;
                 }
