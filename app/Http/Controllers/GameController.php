@@ -67,10 +67,10 @@ class GameController extends Controller
     }
     public function getGameInfo($game, Request $request)
     {
-        dd($game);
-        $game = $this->getGameAll($game);
-       
-        $filePath = storage_path('app/game/' . $game->gameCode . '/getGameInfo.json');
+        $games = $this->getGameAll($game);
+        
+        dd($games);
+        $filePath = storage_path('app/game/' . $games->gameCode . '/getGameInfo.json');
         
 
         if (!file_exists($filePath)) {
