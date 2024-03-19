@@ -17,10 +17,21 @@ class GameController extends Controller
         }
 
         $jsonContent = file_get_contents($filePath);
+        $gameConfig = json_decode($jsonContent, true);
 
-        dd($jsonContent);
+        foreach ($gameConfig->data as $game) {
+            if (filter_var($game_id_code, FILTER_VALIDATE_INT) !== false) {
+                if ($game->gameId == $game_id_code) {
+                    return $game;
+                } else {
+                    if ($game->gameCode == $game_id_code) {
+                        return $game;
+                    }
+                }
+            }
+        }
+        return response()->json(array('error' => 'Jogo não foi encontrado', 404));
     }
-
 
 
 
