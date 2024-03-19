@@ -97,10 +97,9 @@ class GameController extends Controller
         $this->ml = $request->ml;
         $this->bet = $this->cs * $this->ml;
 
-
-        $table = 9;
-        $symbols = [0, 2, 3, 4, 5, 6, 7];
-        $multiplier = [
+        $this->table = 9;
+        $this->symbols = [0, 2, 3, 4, 5, 6, 7];
+        $this->multiplier = [
             0 => [3 => 250],
             2 => [3 => 100],
             3 => [3 => 25],
@@ -110,7 +109,7 @@ class GameController extends Controller
             7 => [3 => 3],
         ];
 
-        $lines = [
+        $this->lines = [
             1 => [1, 4, 7],
             2 => [0, 3, 6],
             3 => [2, 5, 8],
