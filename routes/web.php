@@ -57,7 +57,7 @@ Route::post(
 //https://api.pg-nmga.com/web-api/game-proxy/v2/Resources/GetByResourcesTypeIds?traceId=PZBMMQ18
 Route::post(
     '/web-api/game-proxy/v2/Resources/GetByResourcesTypeIds',
-    [GameController::class, 'spin']
+    [GameController::class, 'getByResourcesTypeIds']
 );
 
 Route::post(
