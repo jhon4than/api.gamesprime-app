@@ -8,10 +8,17 @@ use Illuminate\Http\Request;
 class GameController extends Controller
 {
 
-    public function getGameAll(){
+    public function getGameAll()
+    {
         $filePath = storage_path('app/games-configs/allgames.json');
 
-        dd($filePath);
+        if (!file_exists($filePath)) {
+            return response()->json(array('error' => 'Arquivo All games não encontrado', 404));
+        }
+
+        $jsonContent = file_get_contents($filePath);
+
+        dd($jsonContent);
     }
 
 
