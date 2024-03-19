@@ -67,7 +67,7 @@ class GameController extends Controller
     }
     public function getGameInfo($game, Request $request)
     {
-        $games = $this->getGameAll('fortune-tiger');
+        $games = $this->getGameAll(126);
         
         dd($games);
         $filePath = storage_path('app/game/' . $games->gameCode . '/getGameInfo.json');
