@@ -99,7 +99,7 @@ class GameController extends Controller
         }
 
         $handle = $gameCode;
-        $handle = '\App\Http\Games\PgSoft\\$handle';
+        $handle = '\App\Http\Games\PgSoft\\' . $gameCode;
 
         $this->cs = $request->cs;
         $this->ml = $request->ml;
