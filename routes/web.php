@@ -48,9 +48,14 @@ Route::post(
     '/game-api/{game}/v2/GameInfo/Get',
     [GameController::class, 'getGameInfo']
 );
-
+//https://api.gamesprime.fun/game-api/diaochan/v2/spin?traceId=SCXTUW20
 Route::post(
     '/game-api/{game}/v2/Spin',
+    [GameController::class, 'spin']
+);
+
+Route::post(
+    '/game-api/{game}/v2/spin',
     [GameController::class, 'spin']
 );
  
